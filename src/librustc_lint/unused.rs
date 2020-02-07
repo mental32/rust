@@ -582,6 +582,12 @@ impl EarlyLintPass for UnusedParens {
             }
         }
     }
+
+    fn check_item(&mut self, cx: &EarlyContext<'_>, it: &ast::Item) {
+        if let &ast::ItemKind::Const(_, ref value) = &it.kind {
+            self.check_unused_parens_expr(cx, &value, "const item", false, None, None);
+        }
+    }
 }
 
 declare_lint! {
